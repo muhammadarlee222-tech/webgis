@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>แก้ไขข้อมูลสถานที่ท่องเที่ยว</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        #map { height: 350px; border-radius: 10px; margin-bottom: 15px; }
+    </style>
+</head>
+
+<body class="bg-light">
+<div class="container mt-4 mb-5">
+    <div class="card shadow">
+
+        <div class="card-header bg-warning text-dark">
+            <h4>ระบบแก้ไขข้อมูลสถานที่ท่องเที่ยว</h4>
+        </div>
+
+        <div class="card-body">
+            <form>
+
+                <div id="map"></div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label>Latitude</label>
+                        <input type="text" id="lat" class="form-control" readonly>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>Longitude</label>
+                        <input type="text" id="lng" class="form-control" readonly>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label>ชื่อสถานที่ท่องเที่ยว</label>
+                    <input type="text" class="form-control" value="ตัวอย่างสถานที่">
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label>ประเภทสถานที่</label>
+                        <input type="text" class="form-control" value="ธรรมชาติ">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>หน่วยงาน</label>
+                        <input type="text" class="form-control" value="เทศบาล">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label>รูปภาพ</label>
+                        <input type="file" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>ไฟล์เอกสาร</label>
+                        <input type="file" class="form-control">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label>รายละเอียด</label>
+                    <textarea class="form-control">รายละเอียดตัวอย่าง</textarea>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button class="btn btn-success flex-grow-1">บันทึกข้อมูล</button>
+                    <a href="#" class="btn btn-secondary">ยกเลิก</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function initMap() {
+    const start = { lat: 6.54, lng: 101.28 };
+
+    const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 14,
+        center: start
+    });
+
+    let marker = new google.maps.Marker({
+        position: start,
+        map: map,
+        draggable: true
+    });
+
+    // คลิกแผนที่
+    map.addListener("click", (e) => {
+        marker.setPosition(e.latLng);
+        document.getElementById("lat").value = e.latLng.lat().toFixed(7);
+        document.getElementById("lng").value = e.latLng.lng().toFixed(7);
+    });
+
+    // ลากหมุด
+    marker.addListener("dragend", (e) => {
+        document.getElementById("lat").value = e.latLng.lat().toFixed(7);
+        document.getElementById("lng").value = e.latLng.lng().toFixed(7);
+    });
+}
+</script>
+
+<!-- ใส่ API KEY ของคุณ -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5l0aPyGFqiqY5DpqOYf-8YhN_eYHHobU&callback=initMap" async defer></script>
+
+</body>
+</html>
